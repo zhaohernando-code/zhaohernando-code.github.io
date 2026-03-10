@@ -61,6 +61,5 @@ coverage/
 *.backup
 *~
 
-# OpenDesk 特定配置
-.opendesk/cache/
-.opendesk/logs/
+# OpenDesk Agent 配置
+.opendesk/
