@@ -39,8 +39,16 @@ echo 'export PATH=$(npm prefix -g)/bin:$PATH' >> $HOME/.zshrc
 
 你可以通过下面的命令安装 OpenDesk 的终端版本 `opendesk-cli`。当前我们有每日构建的nightly版本和稳定版本。通常建议大家安装nightly版本以快速获取更新。
 
+**安装最新的稳定版本**
+
 ```shell
-$ npm i -g @bitclub.ai/opendesk-cli@nightly
+$ npm i -g "@bitclub.ai/opendesk-cli"
+```
+
+**安装最新的日构建版本**
+
+```shell
+$ npm i -g "@bitclub.ai/opendesk-cli@nightly"
 ```
 
 安装完成之后，在Shell中运行
