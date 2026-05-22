@@ -13,7 +13,7 @@ categories: nightly-release
 
 - (Cli) 新增 /model 命令用于模型选择
 - (桌面端) 在 BrowserUse 中生成无障碍树时跳过不可见元素
-- (Desktop) 支持在浏览器应用中通过调试菜单导出 ARIA 快照
+- (桌面端) 支持在浏览器应用中通过调试菜单导出 ARIA 快照
 
 ## Bug 修复
 
