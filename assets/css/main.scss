@@ -98,3 +98,38 @@ blockquote {
 .tab-content.active {
     display: block;
 }
+
+/* 代码块复制按钮样式 */
+pre {
+    position: relative;
+}
+
+.copy-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 6px 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease, background 0.2s ease;
+    color: #57606a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+pre:hover .copy-button {
+    opacity: 1;
+}
+
+.copy-button:hover {
+    background: #fff;
+    color: #24292f;
+}
+
+.copy-button.copied {
+    color: #1a7f37;
+}
