@@ -17,9 +17,9 @@ toc: true
 | 迁移准备 | Completed：[Phase 0 盘点](/docs/contribute/astro-migration-phase-0-inventory) |
 | 基础工程 | Completed：Astro/Starlight/MDX 工程已初始化 |
 | 首页组件化 | Completed：首版首页已迁入 Astro 组件 |
-| 代码迁移 | Phase 2 Completed，文档正文迁移 Not Started |
+| 代码迁移 | Phase 3 Completed：文档正文与 Release Notes 已迁入 Astro |
 | 自动部署 | Not Started |
-| 外部审核 | Completed：Phase 1 已完成 Claude + DeepSeek 收口审核，无遗留 P0/P1 |
+| 外部审核 | Completed：Phase 2 已完成 Claude + DeepSeek 收口审核，无遗留 P0/P1 |
 
 本文档用于指导 OpenDesk 官网从当前 Jekyll 站点迁移到 Astro + Starlight + MDX。当前 Jekyll 站点只作为迁移期的线上内容和回退基线；Astro 版本完成并验证后，应删除 Jekyll/Ruby 构建入口，不长期维护双构建系统。
 
@@ -277,12 +277,12 @@ Node version: 22.16.0，跟随项目 .nvmrc 或 Cloudflare Pages 配置
 
 ### Phase 3：文档内容迁移
 
-状态：Todo
+状态：Completed
 
 - 迁移 quickstart、manual、contribute 文档；
 - 将 `/docs/plugins/` 和 `/docs/desktop/` 从 Phase 1 占位页补为正式内容，或保留明确的建设状态；
 - 迁移 release notes 到 `src/content/release-notes/`，并用 `src/pages/news.astro` 替代 Liquid 列表；
-- 将平台切换、安装命令、提示块迁移为 MDX 组件；
+- 将平台切换、安装命令、提示块迁移为 MDX 组件或先展开为普通 Markdown；
 - 转换 Jekyll permalink 到 Astro 路由；
 - 明确 Starlight `/docs` 前缀策略，避免 `/docs/quickstart/cli` 变为 `/quickstart/cli`；
 - 将 Jekyll front matter 中的 `toc`、`sidebar`、`permalink` 等字段转换为 Starlight 支持的配置或迁移记录；
@@ -296,6 +296,15 @@ Node version: 22.16.0，跟随项目 .nvmrc 或 Cloudflare Pages 配置
 - 侧边栏结构与原导航等价或更清晰；
 - 图片、动图、代码块和 iframe 均正常显示。
 - 当前 Jekyll permalink 列表有对应 Astro 路由或 redirect。
+
+执行记录：
+
+- `pages/docs/**` 已迁入 `src/content/docs/docs/**`，Jekyll front matter 已转换为 Starlight front matter；
+- `pages/docs/contribute/prepare.md` 的 `platform-tabs.html` include 已展开为普通 Markdown 分平台段落；
+- Quickstart 和 CLI manual 的 Kramdown `{#...}` 标题锚点已转换为 MDX 可解析的 HTML anchor；
+- `/docs/plugins/`、`/docs/desktop/` 以及少量原本空白的开发者页面保留明确建设状态；
+- 19 篇 `_posts/release_notes/*.md` 已迁入 `src/content/release-notes/`，日期 front matter 已规范为 ISO 8601，并新增 `/news` 列表和 `/news/[slug]` 详情页；
+- `assets/images/**` 已同步到 `public/assets/images/**`，保留旧 Markdown 中的 `/assets/images/...` 图片路径。
 
 ### Phase 4：场景页和渠道页迁移
 
@@ -361,11 +370,11 @@ Node version: 22.16.0，跟随项目 .nvmrc 或 Cloudflare Pages 配置
 | 2026-06-09 | Phase 1 使用 `src/content/docs/docs/**` 保留 `/docs/**` 路由，包管理器采用 pnpm，Node 固定为 22.16.0 | Completed |
 | 2026-06-09 | 明确双构建只作为迁移期防护；Astro 验证和切流后，主线删除 Jekyll/Ruby 构建入口 | Accepted |
 | 2026-06-09 | Phase 2 首页使用 Astro 组件落地，桌面保留整页滚动，窄屏降级为自然流式布局 | Completed |
+| 2026-06-09 | Phase 3 迁入文档中心正文和 19 篇 Release Notes，旧空白页面保留明确建设状态 | Completed |
 
 ## 下一步
 
-1. 进入 Phase 3 文档内容迁移；
-2. 迁移 quickstart、manual、contribute 正文；
-3. 将 release notes 迁入 `src/content/release-notes/`；
-4. 将平台切换和安装命令等重复结构改为 MDX 组件；
-5. Phase 3 审核通过后再提交。
+1. 进入 Phase 4 场景页和渠道页迁移；
+2. 迁移 gallery、usecases、Feishu、Weixin 正文；
+3. 封装视频 iframe 和渠道教程图片布局；
+4. Phase 4 审核通过后再提交。

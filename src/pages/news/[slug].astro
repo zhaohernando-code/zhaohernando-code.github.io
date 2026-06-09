@@ -1,0 +1,38 @@
+---
+import { getCollection, render } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('releaseNotes');
+
+  return notes.map((note) => ({
+    params: { slug: note.id.replace(/\.mdx?$/, '') },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+
+const formatDate = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
+const categoryLabels: Record<string, string> = {
+  'nightly-release': 'Nightly',
+  'stable-release': 'Stable',
+};
+---
+
+<SiteLayout frontmatter={{ title: note.data.title, description: `${note.data.title} | OpenDesk Release Notes` }}>
+  <article class="content-page release-article">
+    <p class="release-kicker">
+      <time datetime={note.data.date.toISOString()}>{formatDate.format(note.data.date)}</time>
+      <span>{categoryLabels[note.data.category] ?? note.data.category}</span>
+    </p>
+    <h1>{note.data.title}</h1>
+    <Content />
+  </article>
+</SiteLayout>
