@@ -100,3 +100,19 @@ Repository settings required on `liyifm/opendesk-pages`:
 - Custom domain set to `opendesk.bitclub.ai`, matching `public/CNAME`.
 
 `public/.nojekyll` is kept so GitHub Pages serves Astro assets exactly as generated.
+
+## Personal Preview Deployment
+
+The production branch should keep:
+
+- `site: 'https://opendesk.bitclub.ai'` in `astro.config.mjs`;
+- `public/CNAME` with `opendesk.bitclub.ai`.
+
+For temporary personal previews such as `https://zhaohernando-code.github.io/`, use a throwaway deployment branch and change only the preview branch:
+
+1. Set `site` in `astro.config.mjs` to the preview domain.
+2. Remove `public/CNAME`.
+3. Run `corepack pnpm build` and `corepack pnpm check:links`.
+4. Push that temporary branch to the preview Pages repository.
+
+Do not merge preview-domain config or CNAME removal back into the production site branch.

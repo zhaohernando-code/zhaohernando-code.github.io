@@ -17,9 +17,9 @@ description: "OpenDesk Astro 迁移 Phase 0 盘点"
 
 本文档记录 OpenDesk 官网从 Jekyll 迁移到 Astro + Starlight + MDX 前的基线盘点。Phase 1 开始前，应以本文档作为路径兼容和内容迁移的输入。
 
-## 当前仓库基线
+## Phase 0 迁移前仓库基线
 
-| 类别 | 当前情况 |
+| 类别 | Phase 0 基线 |
 | --- | --- |
 | 站点框架 | Jekyll + Minimal Mistakes |
 | 页面目录 | `index.md`、`pages/**/*.md` |
@@ -32,7 +32,7 @@ description: "OpenDesk Astro 迁移 Phase 0 盘点"
 
 ## URL 映射表
 
-| 当前 URL | 当前来源 | 目标 Astro/Starlight 路径 | 处理状态 |
+| 迁移前 URL | 迁移前来源 | 目标 Astro/Starlight 路径 | 处理状态 |
 | --- | --- | --- | --- |
 | `/` | `index.md` | `src/pages/index.astro` | Phase 2 重写首页 |
 | `/about/` | `pages/about.md` | `src/pages/about.mdx` | 保留 `/about/`，必要时兼容 `/about` |
@@ -59,7 +59,7 @@ description: "OpenDesk Astro 迁移 Phase 0 盘点"
 
 ## 导航缺口
 
-当前 `_data/navigation.yml` 中有两个内部链接没有对应 Jekyll 页面：
+迁移前 `_data/navigation.yml` 中有两个内部链接没有对应 Jekyll 页面：
 
 | 导航 URL | 导航位置 | 处理建议 |
 | --- | --- | --- |
@@ -72,7 +72,7 @@ description: "OpenDesk Astro 迁移 Phase 0 盘点"
 
 ## 尾斜杠策略
 
-当前 Jekyll permalink 和导航同时存在带尾斜杠和不带尾斜杠的路径，例如 `/docs/manual/cli/`、`/docs/plugins/`、`/docs/desktop/` 与 `/docs/manual/cli`。Astro 迁移采用以下策略：
+迁移前 Jekyll permalink 和导航同时存在带尾斜杠和不带尾斜杠的路径，例如 `/docs/manual/cli/`、`/docs/plugins/`、`/docs/desktop/` 与 `/docs/manual/cli`。Astro 迁移采用以下策略：
 
 1. Phase 1 迁移期曾使用 `trailingSlash: "ignore"` 降低路径差异风险；Phase 5 切到 Astro-only 后改为 `trailingSlash: "always"`，让静态目录输出和 Pagefind 搜索 URL 保持一致。
 2. 对已有导航路径保留当前写法；对同一页面的另一种写法建立 redirect 或等价可访问路径。
@@ -124,7 +124,7 @@ description: "OpenDesk Astro 迁移 Phase 0 盘点"
 | `assets/images/manual/` | 手册动图 | 文档引用优先放入 `public/assets/images/manual/` |
 | `assets/images/channels/` | 飞书、微信教程截图和动图 | 渠道页迁移时保留稳定公共路径 |
 | `assets/images/gallery/` | 场景页缩略图、动图和截图 | 首页或场景组件若需要构建优化，可复制到 `src/assets/images/gallery/`；旧路径保留在 `public/` |
-| `assets/images/cli-logo.png` | 当前站点 logo | Phase 1 作为站点 logo；Phase 2 首页继续复用 |
+| `assets/images/cli-logo.png` | 迁移前站点 logo | Phase 1 作为站点 logo；Phase 2 首页继续复用 |
 | `assets/images/openharmony/logo.png` | 页尾 OpenHarmony logo | `SiteFooter.astro` 继续引用 |
 | `assets/javascripts/copy-button.js` | Jekyll 文档复制按钮脚本 | Starlight 已有代码块能力，Phase 1 评估后删除或不迁移 |
 
@@ -136,7 +136,7 @@ description: "OpenDesk Astro 迁移 Phase 0 盘点"
 
 ## 部署与回退基线
 
-Phase 1 到 Phase 4 期间，当前 Jekyll 站点只作为迁移期临时回退基线。每个阶段提交前可验证：
+Phase 1 到 Phase 4 期间，Jekyll 站点只作为迁移期临时回退基线。每个阶段提交前可验证：
 
 ```bash
 bundle exec jekyll build
@@ -152,15 +152,15 @@ corepack pnpm build
 
 1. 迁移工作在独立分支进行，生产域名不直接切到该分支。
 2. 切流前保留 Jekyll 版本的最后一个 commit 或 tag。
-3. Cloudflare Pages 切流时先使用 preview 环境验证主要 URL。
-4. 如果切流后出现大量 404 或构建失败，Cloudflare Pages 回滚到上一部署；GitHub Pages 方案则切回旧发布分支。
+3. Phase 0 讨论过 Cloudflare Pages 切流方案：当时要求先使用 preview 环境验证主要 URL；该方案已被 GitHub Pages Actions 取代。
+4. 如果切流后出现大量 404 或构建失败，已废弃的 Cloudflare Pages 候选方案会回滚到上一部署；当前 GitHub Pages 方案则切回旧发布分支。
 5. Astro 版本完成内容、路由、部署验证后，主线删除 Jekyll/Ruby 构建入口；旧 Jekyll 站点只保留在 tag/分支中，不在主线长期共存。
 
 ## Phase 1 输入
 
 Phase 1 初始化 Astro/Starlight 时必须先满足：
 
-1. `package.json`、`astro.config.mjs` 和 `src/**` 与当前 Jekyll 文件迁移期临时共存；最终切流阶段删除 Jekyll 入口。
+1. `package.json`、`astro.config.mjs` 和 `src/**` 与迁移前 Jekyll 文件在迁移期临时共存；最终切流阶段删除 Jekyll 入口。
 2. Starlight 文档根路径必须验证为 `/docs/**`。
 3. 先补 `src/content/docs/docs/plugins/index.mdx` 和 `src/content/docs/docs/desktop/index.mdx` 占位页，避免导航 404。
 4. 先建立 `SiteFooter`、`PlatformTabs`、基础页面壳层等组件目录，后续再迁具体内容。
