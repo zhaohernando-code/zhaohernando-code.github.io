@@ -17,7 +17,7 @@ toc: true
 | 迁移准备 | Completed：[Phase 0 盘点](/docs/contribute/astro-migration-phase-0-inventory) |
 | 基础工程 | Completed：Astro/Starlight/MDX 工程已初始化 |
 | 首页组件化 | Completed：首版首页已迁入 Astro 组件 |
-| 代码迁移 | Phase 3 Completed：文档正文与 Release Notes 已迁入 Astro |
+| 代码迁移 | Phase 4 Completed：文档、Release Notes、场景页和渠道页已迁入 Astro |
 | 自动部署 | Not Started |
 | 外部审核 | Completed：Phase 2 已完成 Claude + DeepSeek 收口审核，无遗留 P0/P1 |
 
@@ -308,7 +308,7 @@ Node version: 22.16.0，跟随项目 .nvmrc 或 Cloudflare Pages 配置
 
 ### Phase 4：场景页和渠道页迁移
 
-状态：Todo
+状态：Completed
 
 - 迁移 gallery 和 usecases；
 - 迁移 Feishu、Weixin 渠道教程；
@@ -320,6 +320,14 @@ Node version: 22.16.0，跟随项目 .nvmrc 或 Cloudflare Pages 配置
 - 使用场景页可浏览并进入详情；
 - 渠道教程内容完整；
 - 移动端图文不溢出。
+
+执行记录：
+
+- `/gallery` 已从 Jekyll HTML/CSS 迁为 Astro 卡片网格；
+- `/gallery/file_organize` 和 `/gallery/file_batch` 已基于原卡片内容和现有截图补为可浏览场景页；
+- `/gallery/file_transfer` 已迁入旧正文，并将 Cloudflare Stream iframe 放入统一响应式容器；
+- `/channels/feishu` 和 `/channels/weixin` 已迁入旧教程正文，图片继续使用 `/assets/images/...` 公共路径；
+- 场景页和渠道页本地 200 校验通过，无 Phase 4 占位文案残留。
 
 ### Phase 5：自动部署与切流
 
@@ -371,10 +379,11 @@ Node version: 22.16.0，跟随项目 .nvmrc 或 Cloudflare Pages 配置
 | 2026-06-09 | 明确双构建只作为迁移期防护；Astro 验证和切流后，主线删除 Jekyll/Ruby 构建入口 | Accepted |
 | 2026-06-09 | Phase 2 首页使用 Astro 组件落地，桌面保留整页滚动，窄屏降级为自然流式布局 | Completed |
 | 2026-06-09 | Phase 3 迁入文档中心正文和 19 篇 Release Notes，旧空白页面保留明确建设状态 | Completed |
+| 2026-06-09 | Phase 4 迁入 gallery、usecases、Feishu、Weixin 页面，并统一视频和图片展示容器 | Completed |
 
 ## 下一步
 
-1. 进入 Phase 4 场景页和渠道页迁移；
-2. 迁移 gallery、usecases、Feishu、Weixin 正文；
-3. 封装视频 iframe 和渠道教程图片布局；
-4. Phase 4 审核通过后再提交。
+1. 进入 Phase 5 自动部署与切流；
+2. 配置生产构建命令和预览环境；
+3. 删除 Jekyll/Ruby 主线入口，保留旧版本 tag 或分支作为回退；
+4. Phase 5 审核通过后再提交。
